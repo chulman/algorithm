@@ -20,6 +20,7 @@
 """
 
 # 해설
+# noinspection PyInterpreter
 """ 
 def binary_search(element, some_list):
     start_index = 0
