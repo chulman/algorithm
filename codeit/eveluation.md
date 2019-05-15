@@ -48,4 +48,7 @@
  - 이진 탐색 : O(lgn)
  
  
+ ### 공간 복잡도 (Space Complexity)
  
+ - 공간 복잡도(Space Complexity)는 인풋 크기에 비례해서 알고리즘이 사용하는 메모리 공간
+  

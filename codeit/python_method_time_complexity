@@ -1,0 +1,33 @@
+# 1. type
+
+print(type('1'))  # O(1)
+
+# 2. max, min
+
+print(max(2, 5))  # O(n)
+
+# 3. str
+
+# 파라미터를 n이라고 하고 n의 자릿수를 d라고 합시다. 그러면 str 함수의 시간 복잡도는 O(logn)
+my_str = str(257138)
+print(my_str)
+
+# 4. append, insert, del, index, reverse
+my_list = [7, 5, 2, 3, 6]
+
+my_list.append(9)  # O(1)
+
+my_list.insert(2, 11)  # O(n)
+
+del my_list[2]  # O(n)
+
+my_index = my_list.index(9)  # O(n)
+
+my_list.reverse()  # O(n)
+
+# 5. sort, sorted
+
+print(sorted(my_list))
+my_list.sort()  # O(n log n)
+
+# 7. len
