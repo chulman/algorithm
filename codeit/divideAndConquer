@@ -1,0 +1,39 @@
+## 분할 정복
+
+- 문제의 분할 -> 부분문제를 통해 해결
+
+
+### step
+
+1) divide
+2) conquer
+    - divide and conquer를 계속 할 수도 있다.
+3) combine
+
+### ex
+
+- 1~100까지의 합
+    + 1~50 까지의 합
+    + 51~100 까지의 합
+ 
+ 
+ 
+### merge sort
+
+1) divide list (min divide list 1)
+2) divide list sort
+3) list merge
+
+### quick sort
+
+1) 리스트를 나누는 과정 : partition
+    + set pivot
+    + divide with pivot 
+        - small group
+        - big group
+        - unknown group
+        - pivot group
+
+ 
+2) conquer and combine
+
