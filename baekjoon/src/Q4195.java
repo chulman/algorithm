@@ -1,39 +1,83 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
-class FriendNetwork {
+/*
+      UnionFind
+     /https://www.acmicpc.net/problem/4195
+ */
 
-    HashMap<Integer, List<String>> networkMap = new HashMap<>();
+class Network {
+    private int[] arr = new int[100000];
 
-    public void add(int key, String... friends) {
-        networkMap.put(key, Arrays.asList(friends));
+    public Network() {
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = i;
+        }
     }
 
-    private int find(int key) {
-        return networkMap.get(key).size();
+    private int root(int i) {
+        while (i != arr[i]) i = arr[i];
+        return i;
     }
 
-    public int getNetworkNumber(int code) {
-        return find(code);
+    private boolean connected(int p, int q) {
+        return root(p) == root(q);
     }
-}
 
+    public void union(int p, int q) {
+        int i = root(p);
+        int j = root(q);
+        arr[i] = j;
+    }
 
-public class Q4195 {
-    public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
+    public int getFriendsCount(int friendsCount) {
 
-        int testCase = scan.nextInt();
-
-        for (int i = 0; i < testCase; i++) {
-
-            int input_friends = scan.nextInt();
-            FriendNetwork network = new FriendNetwork();
-
-            for (int j = 0; j < input_friends; j++) {
-                String friends = scan.nextLine();
-                network.add(j, friends.split(" "));
-//                System.out.println(network.getNetworkNumber(j));
+        int networkCount = 0;
+        for (int i = 0; i <= friendsCount; i++) {
+            if (connected(i, friendsCount)) {
+                networkCount++;
             }
         }
+        return networkCount;
+    }
+
+}
+
+public class Q4195 {
+
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int testCase = Integer.parseInt(br.readLine());
+
+        while (testCase > 0) {
+            int lines = Integer.parseInt(br.readLine());
+
+            Network network = new Network();
+            Map<String, Integer> friendsMap = new HashMap<>();
+
+            int friendsCount = 0;
+            for (int i = 0; i < lines; i++) {
+                StringTokenizer tokenizer = new StringTokenizer(br.readLine());
+                String friends1 = tokenizer.nextToken();
+                String friends2 = tokenizer.nextToken();
+
+                if (!friendsMap.containsKey(friends1)) {
+                    ++friendsCount;
+                    friendsMap.put(friends1, friendsCount);
+                }
+
+                if (!friendsMap.containsKey(friends2)) {
+                    ++friendsCount;
+                    friendsMap.put(friends2, friendsCount);
+                }
+                network.union(friendsMap.get(friends1), friendsMap.get(friends2));
+                System.out.println(network.getFriendsCount(friendsCount));
+            }
+            testCase--;
+        }
+        br.close();
     }
 }
