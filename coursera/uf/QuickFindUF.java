@@ -1,3 +1,4 @@
+package uf;
 /**
  * Union-Find
  */
