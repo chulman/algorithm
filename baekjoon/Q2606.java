@@ -9,13 +9,32 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 /**
- * 연결리스트를 이용한 BFS 구현
+ * 연결 리스트를 이용한 DFS 구현
  */
 public class Q2606 {
-
     private static LinkedList<Integer>[] list = null;
     private static Boolean[] byrusCheck = null;
 
+    /**
+     * DFS(G, V)
+     *     visited[V] <- yes;
+     *     for each node adjacent to x do
+     *         if visited[x] = no then
+     *             DFS(G, x);
+     *     end
+     * end
+     */
+    private static void DFS(int v) {
+        byrusCheck[v] = true;
+        for (int i = 0; i < list[v].size(); i++) {
+            int node = list[v].get(i);
+            if (!byrusCheck[node]) {
+                byrusCheck[node] = true;
+                DFS(node);
+            }
+        }
+
+    }
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -23,39 +42,75 @@ public class Q2606 {
 
         list = new LinkedList[computers];
         byrusCheck = new Boolean[computers];
-        for(int i=0; i<list.length; i++){
+
+        for (int i = 0; i < list.length; i++) {
             list[i] = new LinkedList();
             byrusCheck[i] = false;
         }
 
         int edge = Integer.parseInt(reader.readLine());
 
-        for(int i=0; i<edge; i++){
+        for (int i = 0; i < edge; i++) {
             StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
             int n = Integer.parseInt(tokenizer.nextToken());
             int m = Integer.parseInt(tokenizer.nextToken());
-            list[n-1].add(m-1);
-            list[m-1].add(n-1);
+            list[n - 1].add(m - 1);
+            list[m - 1].add(n - 1);
         }
 
-        //traversal
-        Queue<Integer> bfs = new ArrayDeque<>();
-        byrusCheck[0] = true;
-        bfs.add(0);
+        DFS(0);
+        System.out.println(Arrays.stream(byrusCheck).filter(b -> b == true).count() - 1);
 
-        while(!bfs.isEmpty()){
-            int v = bfs.poll();
-            while(!list[v].isEmpty()){
-                int n = list[v].poll();
-                if(!byrusCheck[n]) {
-                    bfs.add(n);
-                    byrusCheck[n] = true;
-                }
-            }
-        }
-        System.out.println(Arrays.stream(byrusCheck).filter(b->b==true).count()-1);
     }
 }
+/**
+ * 연결리스트를 이용한 BFS 구현
+ */
+//public class Q2606 {
+//
+//    private static LinkedList<Integer>[] list = null;
+//    private static Boolean[] byrusCheck = null;
+//
+//
+//    public static void main(String[] args) throws IOException {
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+//        int computers = Integer.parseInt(reader.readLine());
+//
+//        list = new LinkedList[computers];
+//        byrusCheck = new Boolean[computers];
+//        for(int i=0; i<list.length; i++){
+//            list[i] = new LinkedList();
+//            byrusCheck[i] = false;
+//        }
+//
+//        int edge = Integer.parseInt(reader.readLine());
+//
+//        for(int i=0; i<edge; i++){
+//            StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
+//            int n = Integer.parseInt(tokenizer.nextToken());
+//            int m = Integer.parseInt(tokenizer.nextToken());
+//            list[n-1].add(m-1);
+//            list[m-1].add(n-1);
+//        }
+//
+//        //traversal
+//        Queue<Integer> bfs = new ArrayDeque<>();
+//        byrusCheck[0] = true;
+//        bfs.add(0);
+//
+//        while(!bfs.isEmpty()){
+//            int v = bfs.poll();
+//            while(!list[v].isEmpty()){
+//                int n = list[v].poll();
+//                if(!byrusCheck[n]) {
+//                    bfs.add(n);
+//                    byrusCheck[n] = true;
+//                }
+//            }
+//        }
+//        System.out.println(Arrays.stream(byrusCheck).filter(b->b==true).count()-1);
+//    }
+//}
 
 /**
  * 인접행렬을을 이용한 BFS 구현
@@ -109,3 +164,5 @@ public class Q2606 {
 //        System.out.println(Arrays.stream(byrusCheck).filter(b->b==true).count()-1);
 //    }
 //}
+
+
