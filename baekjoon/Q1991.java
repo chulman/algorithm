@@ -1,42 +1,99 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.util.concurrent.LinkedBlockingDeque;
 
 public class Q1991 {
-    private static int line = 5;
-    private static int count = 4;
-    private static int[][] cookScore = new int[line][count];
+
+    static Queue<String> queue = new LinkedBlockingDeque<>();
+    static Map<String, Node> map = new HashMap<>();
+
+    static class Node {
+        String data;
+        String pre;
+        String next;
+
+        public Node(String data, String pre, String next) {
+            this.data = data;
+            this.pre = pre;
+            this.next = next;
+        }
+
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "data='" + data + '\'' +
+                    ", pre='" + pre + '\'' +
+                    ", next='" + next + '\'' +
+                    '}';
+        }
+    }
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        int cnt = Integer.parseInt(reader.readLine());
 
-        for (int i = 0; i < line; i++) {
+        Node rootNode = null;
+        for (int i = 0; i < cnt; i++) {
             StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
-            for (int j = 0; j < count; j++) {
-                cookScore[i][j] = Integer.parseInt(tokenizer.nextToken());
-            }
-        }
-        reader.close();
-        calcMaxScore();
+            String data = tokenizer.nextToken();
+            String leftNode = tokenizer.nextToken();
+            String rightNode = tokenizer.nextToken();
 
+            Node node = new Node(data, leftNode, rightNode);
+            if (i == 0) rootNode = node;
+            map.put(data, node);
+        }
+
+        String preResult = "";
+
+        preOrderTraversal(rootNode);
+
+        while (!queue.isEmpty()) preResult += queue.poll();
+        System.out.println(preResult);
+
+        String inorderResult = "";
+        inOrderTraversal(rootNode);
+
+        while (!queue.isEmpty()) inorderResult += queue.poll();
+        System.out.println(inorderResult);
+
+        String postResult = "";
+        postOrderTraversal(rootNode);
+
+        while (!queue.isEmpty()) postResult += queue.poll();
+        System.out.println(postResult);
     }
 
-    private static void calcMaxScore() {
+    private static void preOrderTraversal(Node node) {
 
-        int index = -1;
-        int max = 0;
+        queue.add(node.data);
 
-        for (int i = 0; i < cookScore.length; i++) {
-            int sum = 0;
-            for (int j = 0; j < cookScore[i].length; j++)
-                sum += cookScore[i][j];
-            if (max < sum) {
-                index = i;
-                max = sum;
-            }
-        }
+        if (node.pre != null && !node.pre.equals("."))
+            preOrderTraversal(map.get(node.pre));
 
-        System.out.println((index+1) + " " + max);
+        if (node.next != null && !node.next.equals("."))
+            preOrderTraversal(map.get(node.next));
+    }
+
+    private static void inOrderTraversal(Node node) {
+        if (node.pre != null && !node.pre.equals("."))
+            inOrderTraversal(map.get(node.pre));
+
+        queue.add(node.data);
+
+        if (node.next != null && !node.next.equals("."))
+            inOrderTraversal(map.get(node.next));
+    }
+
+    private static void postOrderTraversal(Node node) {
+
+        if (node.pre != null && !node.pre.equals("."))
+            postOrderTraversal(map.get(node.pre));
+        if (node.next != null && !node.next.equals("."))
+            postOrderTraversal(map.get(node.next));
+
+        queue.add(node.data);
     }
 }
