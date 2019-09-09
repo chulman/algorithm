@@ -3,29 +3,25 @@ package level02;
 import java.util.*;
 
 public class Disguise {
+
+    public static Map<String, Integer> map = new HashMap<>();
+
     public int solution(String[][] clothes) {
-        int answer = 0;
-        Map<String, List<String>> map = new HashMap<>();
-
-
-        for(int i=0; i<clothes.length; i++){
-            String value = clothes[i][0];
+        int answer = 1;
+        for (int i = 0; i < clothes.length; i++) {
             String kind = clothes[i][1];
-            if(map.get(kind) == null){
-                List list = new ArrayList();
-                list.add(value);
-                map.put(kind, list);
+            if (map.get(kind) == null) {
+                map.put(kind, 1);
             } else {
-                map.get(kind).add(value);
+                map.put(kind, map.get(kind)+1);
             }
         }
 
         Iterator<String> iter = map.keySet().iterator();
-
         while(iter.hasNext()){
-            String list = iter.next();
+            String key = iter.next();
+            answer *= (map.get(key)+1);
         }
-
-        return answer;
+        return answer-1;
     }
 }
